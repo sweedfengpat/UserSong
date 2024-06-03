@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc",
     "start": "node dist/index.js",
-    "start:dev": "nodemon"
+    "start:dev": "nodemon --exec ts-node src/index.ts"
   },
   "dependencies": {
     "express": "^4.17.1",
