@@ -1,39 +1,55 @@
 "use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
-const typeorm_1 = require("typeorm");
 const User_1 = require("../entity/User");
+const data_source_1 = require("../data-source");
 const router = (0, express_1.Router)();
-router.post('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const userRepository = (0, typeorm_1.getRepository)(User_1.User);
-    const user = userRepository.create(req.body);
-    yield userRepository.save(user);
-    res.json(user);
-}));
-router.put('/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const userRepository = (0, typeorm_1.getRepository)(User_1.User);
-    const user = yield userRepository.findOne({ where: { id: Number(req.params.id) } });
-    if (user) {
-        userRepository.merge(user, req.body);
-        const result = yield userRepository.save(user);
+router.get('/', async (req, res) => {
+    const userRepository = (await data_source_1.AppDataSource).getRepository(User_1.Users);
+    const users = await userRepository.find();
+    res.json(users);
+});
+router.post('/', async (req, res) => {
+    if (!req.body.name || !req.body.email) {
+        res.status(400).json({ message: "Name and email are required" });
+        return;
+    }
+    if (!req.body.created_at) {
+        req.body.created_at = new Date();
+        req.body.updated_at = new Date();
+    }
+    const userRepository = (await data_source_1.AppDataSource).getRepository(User_1.Users);
+    const users = userRepository.create(req.body);
+    await userRepository.save(users);
+    res.json(users);
+});
+router.put('/:id', async (req, res) => {
+    if (!req.body.name || !req.body.email) {
+        res.status(400).json({ message: "Name and email are required" });
+        return;
+    }
+    if (!req.body.created_at) {
+        req.body.created_at = new Date();
+        req.body.updated_at = new Date();
+    }
+    const userRepository = (await data_source_1.AppDataSource).getRepository(User_1.Users);
+    const users = await userRepository.findOne({ where: { id: Number(req.params.id) } });
+    if (users) {
+        userRepository.merge(users, req.body);
+        const result = await userRepository.save(users);
         res.json(result);
     }
     else {
         res.status(404).json({ message: "User not found" });
     }
-}));
-router.delete('/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const userRepository = (0, typeorm_1.getRepository)(User_1.User);
-    const result = yield userRepository.delete(req.params.id);
+});
+router.delete('/:id', async (req, res) => {
+    if (!req.params.id) {
+        res.status(400).json({ message: "Id is required" });
+        return;
+    }
+    const userRepository = (await data_source_1.AppDataSource).getRepository(User_1.Users);
+    const result = await userRepository.delete(req.params.id);
     res.json(result);
-}));
+});
 exports.default = router;

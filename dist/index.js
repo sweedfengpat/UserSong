@@ -3,28 +3,24 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.app = void 0;
 require("reflect-metadata");
-const typeorm_1 = require("typeorm");
 const express_1 = __importDefault(require("express"));
 const user_1 = __importDefault(require("./routes/user"));
 const song_1 = __importDefault(require("./routes/song"));
-const User_1 = require("./entity/User");
-const Song_1 = require("./entity/Song");
-const app = (0, express_1.default)();
-app.use(express_1.default.json());
-(0, typeorm_1.createConnection)({
-    type: "postgres",
-    host: process.env.DB_HOST,
-    port: Number(process.env.DB_PORT),
-    username: process.env.DB_USERNAME,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
-    entities: [User_1.User, Song_1.Song],
-    synchronize: true,
-}).then(connection => {
-    app.use('/users', user_1.default);
-    app.use('/songs', song_1.default);
-    app.listen(3000, () => {
-        console.log("Server is running on port 3000");
+const typeorm_1 = require("typeorm");
+exports.app = (0, express_1.default)();
+exports.app.use(express_1.default.json());
+const port = process.env.PORT || 3000;
+(0, typeorm_1.createConnection)().then(() => {
+    console.log('Data Source has been initialized!');
+    // Use routes after the connection has been initialized
+    exports.app.use('/users', user_1.default);
+    exports.app.use('/songs', song_1.default);
+    exports.app.listen(port, () => {
+        console.log(`Server is running on http://localhost:${port}`);
     });
-}).catch(error => console.log(error));
+})
+    .catch((err) => {
+    console.error('Error during Data Source initialization:', err);
+});

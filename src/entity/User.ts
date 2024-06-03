@@ -1,24 +1,24 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToMany, JoinTable } from "typeorm";
-import { Song } from "./Song";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable } from 'typeorm';
+import { Songs } from './Song';
 
 @Entity()
-export class User {
-  @PrimaryGeneratedColumn()
-  id!: number; // ใช้เครื่องหมาย ! เพื่อบอกว่า property นี้จะไม่เป็น undefined
+export class Users {
+    @PrimaryGeneratedColumn()
+    id: number;
 
-  @Column()
-  name!: string; // ใช้เครื่องหมาย ! เพื่อบอกว่า property นี้จะไม่เป็น undefined
+    @Column()
+    name: string;
 
-  @Column()
-  email!: string; // ใช้เครื่องหมาย ! เพื่อบอกว่า property นี้จะไม่เป็น undefined
+    @Column()
+    email: string;
 
-  @CreateDateColumn()
-  created_at!: Date; // ใช้เครื่องหมาย ! เพื่อบอกว่า property นี้จะไม่เป็น undefined
+    @Column()
+    created_at: Date;
 
-  @UpdateDateColumn()
-  updated_at!: Date; // ใช้เครื่องหมาย ! เพื่อบอกว่า property นี้จะไม่เป็น undefined
+    @Column()
+    updated_at: Date;
 
-  @ManyToMany(() => Song)
-  @JoinTable()
-  songs!: Song[]; // ใช้เครื่องหมาย ! เพื่อบอกว่า property นี้จะไม่เป็น undefined
+    @ManyToMany(() => Songs, song => song.users)
+    @JoinTable()
+    songs: Songs[];
 }

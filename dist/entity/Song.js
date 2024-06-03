@@ -9,32 +9,32 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Song = void 0;
+exports.Songs = void 0;
 const typeorm_1 = require("typeorm");
 const User_1 = require("./User");
-let Song = class Song {
+let Songs = class Songs {
 };
-exports.Song = Song;
+exports.Songs = Songs;
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)(),
     __metadata("design:type", Number)
-], Song.prototype, "id", void 0);
+], Songs.prototype, "id", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
-], Song.prototype, "name", void 0);
+], Songs.prototype, "name", void 0);
 __decorate([
-    (0, typeorm_1.CreateDateColumn)(),
+    (0, typeorm_1.Column)(),
     __metadata("design:type", Date)
-], Song.prototype, "created_at", void 0);
+], Songs.prototype, "created_at", void 0);
 __decorate([
-    (0, typeorm_1.UpdateDateColumn)(),
+    (0, typeorm_1.Column)(),
     __metadata("design:type", Date)
-], Song.prototype, "updated_at", void 0);
+], Songs.prototype, "updated_at", void 0);
 __decorate([
-    (0, typeorm_1.ManyToMany)(() => User_1.User, user => user.songs),
+    (0, typeorm_1.ManyToMany)(() => User_1.Users, user => user.songs),
     __metadata("design:type", Array)
-], Song.prototype, "users", void 0);
-exports.Song = Song = __decorate([
+], Songs.prototype, "users", void 0);
+exports.Songs = Songs = __decorate([
     (0, typeorm_1.Entity)()
-], Song);
+], Songs);

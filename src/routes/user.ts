@@ -1,22 +1,43 @@
 import { Router } from "express";
-import { getRepository } from "typeorm";
-import { User } from "../entity/User";
+import { getRepository,getConnection } from "typeorm";
+import { Users } from "../entity/User";
+import { AppDataSource } from "../data-source";
 
 const router = Router();
+const userRepository = AppDataSource.getRepository(Users);
+
+router.get('/', async (req, res) => {
+  const users = await userRepository.find();
+  res.json(users);
+});
 
 router.post('/', async (req, res) => {
-  const userRepository = getRepository(User);
-  const user = userRepository.create(req.body);
-  await userRepository.save(user);
-  res.json(user);
+  if (!req.body.name || !req.body.email) {
+    res.status(400).json({ message: "Name and email are required" });
+    return;
+  }
+  if (!req.body.created_at) {
+    req.body.created_at = new Date();
+    req.body.updated_at = new Date();
+  }
+  const users = userRepository.create(req.body);
+  await userRepository.save(users);
+  res.json(users);
 });
 
 router.put('/:id', async (req, res) => {
-  const userRepository = getRepository(User);
-  const user = await userRepository.findOne({ where: { id: Number(req.params.id) } });
-  if (user) {
-    userRepository.merge(user, req.body);
-    const result = await userRepository.save(user);
+  if (!req.body.name || !req.body.email) {
+    res.status(400).json({ message: "Name and email are required" });
+    return;
+  }
+  if (!req.body.created_at) {
+    req.body.created_at = new Date();
+    req.body.updated_at = new Date();
+  }
+  const users = await userRepository.findOne({ where: { id: Number(req.params.id) } });
+  if (users) {
+    userRepository.merge(users, req.body);
+    const result = await userRepository.save(users);
     res.json(result);
   } else {
     res.status(404).json({ message: "User not found" });
@@ -24,7 +45,10 @@ router.put('/:id', async (req, res) => {
 });
 
 router.delete('/:id', async (req, res) => {
-  const userRepository = getRepository(User);
+  if (!req.params.id) {
+    res.status(400).json({ message: "Id is required" });
+    return;
+  }
   const result = await userRepository.delete(req.params.id);
   res.json(result);
 });

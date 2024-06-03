@@ -1,23 +1,22 @@
--- สร้างตาราง users
-CREATE TABLE users (
+CREATE TABLE IF NOT EXISTS users (
     id SERIAL PRIMARY KEY,
-    name TEXT NOT NULL,
-    email TEXT NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    name VARCHAR NOT NULL,
+    email VARCHAR NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
 );
 
--- สร้างตาราง songs
-CREATE TABLE songs (
+CREATE TABLE IF NOT EXISTS songs (
     id SERIAL PRIMARY KEY,
-    name TEXT NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    name VARCHAR DEFAULT 'Unknown',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
 );
 
--- สร้างตาราง relationships ระหว่าง users กับ songs
-CREATE TABLE user_songs (
-    user_id INTEGER REFERENCES users(id),
-    song_id INTEGER REFERENCES songs(id),
-    PRIMARY KEY (user_id, song_id)
+CREATE TABLE IF NOT EXISTS user_songs (
+    user_id INT,
+    song_id INT,
+    PRIMARY KEY (user_id, song_id),
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (song_id) REFERENCES songs(id)
 );
