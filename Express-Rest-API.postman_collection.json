@@ -210,6 +210,56 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "add a favorite song for a user",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/songs/21",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"songs",
+						"21"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add a favorite song for a user",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/users/2/songs/8",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"users",
+						"2",
+						"songs",
+						"8"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add a favorite song for a user",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
 		}
 	]
 }
