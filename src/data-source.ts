@@ -1,6 +1,4 @@
 import { DataSource } from 'typeorm';
-import { Users } from './entity/User';
-import { Songs } from './entity/Song';
 
 
 export const AppDataSource = new DataSource({

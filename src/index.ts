@@ -3,7 +3,6 @@ import express from 'express';
 import userRouter from "./routes/user";
 import songRouter from "./routes/song";
 import { AppDataSource } from './data-source';
-import { createConnection } from 'typeorm';
 
 export const app = express();
 app.use(express.json());
@@ -11,7 +10,7 @@ const port = process.env.PORT || 3000;
 
 AppDataSource.initialize().then(() => {
   console.log('Data Source has been initialized!');
-  // Use routes after the connection has been initialized
+
   app.use('/users', userRouter);
   app.use('/songs', songRouter);
 

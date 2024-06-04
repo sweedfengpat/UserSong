@@ -35,7 +35,7 @@ router.put('/:id', async (req, res) => {
     req.body.created_at = new Date();
     req.body.updated_at = new Date();
   }
-  const songs = await songRepository.findOneBy({ id: parseInt(req.params.id) }); // Pass the id as a separate argument
+  const songs = await songRepository.findOneBy({ id: parseInt(req.params.id) });
   if (songs) {
     songRepository.merge(songs, req.body);
     const result = await songRepository.save(songs);
@@ -44,6 +44,7 @@ router.put('/:id', async (req, res) => {
     res.status(404).json({ message: "Songs not found" });
   }
 });
+
 
 router.delete('/:id', async (req, res) => {
   if (!req.params.id) {

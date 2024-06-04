@@ -18,7 +18,13 @@ export class Users {
     @Column()
     updated_at: Date;
 
-    @ManyToMany(() => Songs, song => song.users)
-    @JoinTable()
+
+    @ManyToMany(() => Songs)
+    @JoinTable({
+        name: 'user_songs',
+        joinColumn: { name: 'user_id', referencedColumnName: 'id' },
+        inverseJoinColumn: { name: 'song_id', referencedColumnName: 'id' },
+    })
     songs: Songs[];
+
 }

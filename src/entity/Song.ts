@@ -16,5 +16,5 @@ export class Songs {
     updated_at: Date;
 
     @ManyToMany(() => Users, user => user.songs)
-    users: Users[];
+    user: Users[];
 }
